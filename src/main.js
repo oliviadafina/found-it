@@ -1,5 +1,10 @@
 import { createApp } from 'vue'
 import './style.css'
 import App from './App.vue'
+import 'maplibre-gl/dist/maplibre-gl.css'
+import router from './router'
+import '@fortawesome/fontawesome-free/css/all.min.css'
 
-createApp(App).mount('#app')
+const app = createApp(App)
+app.use(router)
+app.mount('#app')
