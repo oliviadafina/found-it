@@ -57,7 +57,7 @@ onMounted(() => {
 
   // Map sudah selesai load → kabari parent supaya aman panggil resize / add markers
   map.on("load", () => {
-    emit("ready"); // 🔑 PENTING
+    emit("ready"); // PENTING
   });
 
   // Klik map → ambil koordinat → reverse geocoding → update location ke parent

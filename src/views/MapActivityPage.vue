@@ -3,11 +3,7 @@
   <div class="min-h-screen relative bg-gray-50">
     <!-- HEADER APLIKASI (RESET DATA AKTIVITAS) -->
     <HeaderBar @reset-activities="clearAllActivities" />
-
-    <!-- ================================================= -->
     <!-- =================== MOBILE ===================== -->
-    <!-- ================================================= -->
-
     <!-- MAP SEBAGAI BACKGROUND FULL SCREEN (MOBILE ONLY) -->
     <div class="md:hidden absolute inset-0 z-0 pt-16">
       <MapView
@@ -18,7 +14,6 @@
         @ready="mobileMapReady = true"
       />
     </div>
-
     <!-- TOMBOL FOCUS MAP (MOBILE) -->
     <!-- Posisi di belakang bottom sheet -->
     <button
@@ -31,7 +26,6 @@
         <i class="fa-solid fa-crosshairs"></i>
       </div>
     </button>
-
     <!-- BOTTOM SHEET (FORM / LIST / HASIL AI) -->
     <div
       class="md:hidden fixed bottom-0 left-0 right-0 z-10 bg-white rounded-t-2xl shadow-xl transition-transform duration-300"
@@ -45,9 +39,8 @@
         class="w-12 h-1.5 bg-gray-300 rounded-full mx-auto my-3"
         @click="sheetOpen = !sheetOpen"
       ></div>
-
       <!-- KONTEN SHEET -->
-      <div class="px-4 pb-6 max-h-[70vh] overflow-y-auto pb-safe">
+      <div class="px-4 pb-6 max-h-[70vh] overflow-y-auto">
         <!-- MODE FORM / ANALYZING -->
         <template v-if="sheetMode === 'form' || sheetMode === 'analyzing'">
           <!-- FORM CATAT AKTIVITAS -->
@@ -64,7 +57,6 @@
             @search="updateSearchLocation"
             @cancel-edit="cancelEditMode"
           />
-
           <!-- LIST AKTIVITAS -->
           <ActivityList
             v-if="!isEditing"
@@ -88,7 +80,6 @@
             </button>
           </ActivityList>
         </template>
-
         <!-- MODE HASIL ANALISIS AI -->
         <template v-if="sheetMode === 'result'">
           <ActivityList :activities="activities" :hideActions="true" />
@@ -97,10 +88,7 @@
       </div>
     </div>
 
-    <!-- ================================================= -->
     <!-- =================== DESKTOP ==================== -->
-    <!-- ================================================= -->
-
     <div class="hidden md:flex h-[calc(100vh-64px)]">
       <!-- PANEL KIRI (FORM + LIST) -->
       <div class="w-1/3 bg-white shadow-md overflow-y-auto p-6 space-y-6">
@@ -117,7 +105,6 @@
           @search="updateSearchLocation"
           @cancel-edit="cancelEditMode"
         />
-
         <!-- LIST AKTIVITAS (DESKTOP) -->
         <ActivityList
           v-if="!isEditing"
@@ -141,7 +128,6 @@
             </template>
           </button>
         </ActivityList>
-
         <!-- HASIL AI (DESKTOP) -->
         <AiResultBox
           v-if="isViewingAIResult"
@@ -149,7 +135,6 @@
           @back="resetToAdd"
         />
       </div>
-
       <!-- PANEL KANAN (MAP DESKTOP) -->
       <div class="w-2/3 h-full relative">
         <!-- MAP DESKTOP -->
@@ -160,7 +145,6 @@
           @update-location="updateLocation"
           @ready="desktopMapReady = true"
         />
-
         <!-- KONTROL MAP DESKTOP -->
         <div
           class="absolute bottom-6 right-6 flex items-center gap-2 bg-white/90 p-2 rounded-xl shadow"
@@ -254,7 +238,7 @@ onMounted(() => {
       lng: Number(a.lng),
     }));
 
-    // 🔑 pastikan UI di mode utama
+    // pastikan UI di mode utama
     showForm.value = true;
     sheetMode.value = "form";
     sheetOpen.value = true;
@@ -319,10 +303,10 @@ watch(desktopMapReady, (ready) => {
   restoreMap(desktopMapRef.value);
 });
 
-watch(sheetOpen, (open) => {
-  if (window.innerWidth < 768) {
-    document.body.style.overflow = open ? "hidden" : "auto";
-  }
+watch(sheetOpen, () => {
+  setTimeout(() => {
+    focusMap();
+  }, 300);
 });
 
 //  CRUD ACTIVITY
@@ -333,7 +317,6 @@ const addActivity = (activity) => {
       alert("Jadwal aktivitas ini bertabrakan dengan aktivitas sebelumnya!");
       return;
     }
-
     // Kalau valid → UPDATE
     activities.value = activities.value.map((a) =>
       a.id === editId.value
@@ -346,9 +329,7 @@ const addActivity = (activity) => {
         : a
     );
     sortActivities();
-
     resetFormFields();
-
     isEditing.value = false;
     editId.value = null;
     editData.value = null;
@@ -358,7 +339,6 @@ const addActivity = (activity) => {
       alert("Jadwal aktivitas ini bertabrakan dengan aktivitas sebelumnya!");
       return;
     }
-
     // Kalau valid → PUSH
     activities.value.push({
       id: crypto.randomUUID(),
@@ -367,9 +347,7 @@ const addActivity = (activity) => {
       lng: currentLng.value,
     });
     sortActivities();
-
     resetFormFields();
-
     location.value = "";
     searchLocation.value = "";
     locationStatus.value = "";
@@ -380,7 +358,6 @@ const addActivity = (activity) => {
   }
   sheetOpen.value = true;
   sheetMode.value = "form";
-
   saveToLocalStorage();
   formKey.value++;
 };
@@ -468,7 +445,7 @@ const analyzeAI = async () => {
   aiResult.value = "";
   showForm.value = false;
 
-  // 🔑 1. PAKAI CACHE JIKA ADA
+  // 1. PAKAI CACHE JIKA ADA
   if (cachedResult) {
     isViewingAIResult.value = true;
     aiResult.value = cachedResult;
@@ -482,7 +459,7 @@ const analyzeAI = async () => {
     return;
   }
 
-  // 🔑 2. BARU PANGGIL GEMINI JIKA BELUM ADA
+  // 2. BARU PANGGIL GEMINI JIKA BELUM ADA
   try {
     const result = await analyzeActivities(activities.value, lostItem.value);
     aiResult.value = result;

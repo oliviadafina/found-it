@@ -1,9 +1,13 @@
 <template>
   <header
-    class="fixed top-0 left-0 right-0 z-50 bg-found-blue h-16 flex justify-center text-white shadow header-safe"
+    class="relative z-30 bg-found-blue h-16 flex justify-center text-white shadow"
   >
     <div class="w-full max-w-6xl flex items-center justify-between px-6">
-      <img src="/foundit-logo.png" alt="Logo" class="w-24 object-contain" />
+      <img
+        src="/foundit-logo.png"
+        alt="Logo"
+        class="w-24 object-contain"
+      />
 
       <button
         @click="$emit('reset-activities')"
@@ -18,4 +22,5 @@
 
 <script setup>
 defineEmits(["reset-activities"]);
+
 </script>
