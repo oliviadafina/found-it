@@ -47,7 +47,7 @@
       ></div>
 
       <!-- KONTEN SHEET -->
-      <div class="px-4 pb-6 max-h-[70vh] overflow-y-auto">
+      <div class="px-4 pb-6 max-h-[70vh] overflow-y-auto pb-safe">
         <!-- MODE FORM / ANALYZING -->
         <template v-if="sheetMode === 'form' || sheetMode === 'analyzing'">
           <!-- FORM CATAT AKTIVITAS -->
@@ -319,10 +319,10 @@ watch(desktopMapReady, (ready) => {
   restoreMap(desktopMapRef.value);
 });
 
-watch(sheetOpen, () => {
-  setTimeout(() => {
-    focusMap();
-  }, 300);
+watch(sheetOpen, (open) => {
+  if (window.innerWidth < 768) {
+    document.body.style.overflow = open ? "hidden" : "auto";
+  }
 });
 
 //  CRUD ACTIVITY
