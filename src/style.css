@@ -6,3 +6,33 @@ html, body, #app {
   height: 100%;
   margin: 0;
 }
+
+/* Close button MapLibre default */
+.maplibregl-popup-close-button {
+  font-size: 20px !important;
+  font-weight: 700 !important;
+  top: 6px !important;
+  right: 8px !important;
+
+  color: #333 !important;            /* warna teks default */
+  background: rgba(255, 255, 255, 0.85) !important;
+  
+  width: 26px !important;
+  height: 26px !important;
+  line-height: 24px !important;
+  text-align: center !important;
+
+  border-radius: 6px !important;
+  cursor: pointer;
+  transition: 0.15s ease-in-out;
+}
+
+.maplibregl-popup-close-button:hover {
+  background: #dc2626 !important;
+  color: white !important;
+  border-color: #b91c1c !important;
+}
+
+.pt-safe {
+  padding-top: env(safe-area-inset-top);
+}
