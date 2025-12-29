@@ -38,7 +38,9 @@ Tolong analisis SEMUA lokasi di atas dan lakukan hal berikut:
 
 3. Tampilkan hasil dalam format berikut (WAJIB):
 
-Lokasi paling berpotensi tempat hilangnya ${lostItem}:
+Berikut adalah lokasi-lokasi yang paling berpotensi menjadi tempat hilangnya ${
+    lostItem || "barang tersebut"
+  }, disusun berdasarkan tingkat kemungkinan dari yang paling tinggi hingga paling rendah.
 
 • **Nama Lokasi Peringkat 1**, alasan singkat (ringkas, jelas, konteks risiko).
 • **Nama Lokasi Peringkat 2**, alasan singkat.
